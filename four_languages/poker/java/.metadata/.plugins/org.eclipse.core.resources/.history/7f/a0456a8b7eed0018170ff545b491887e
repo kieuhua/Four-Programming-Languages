@@ -1,0 +1,30 @@
+package poker;
+
+import java.util.TreeMap;
+
+public class PokerResult {
+    private Integer score;
+    private TreeMap valuesRanks;
+
+    public PokerResult(Integer score, TreeMap valuesRanks) {
+        this.score = score;
+        this.valuesRanks = valuesRanks;
+    }
+
+    public int getScore() {
+        return (int) score;
+    }
+
+    public TreeMap valuesRanks() {
+        return valuesRanks;
+    }
+
+    public static void main(String[] args) {
+        TreeMap<Integer, Integer> hash1 = new TreeMap<Integer, Integer>();
+        hash1.put( 3, 4);
+        hash1.put( 5, 6);
+        PokerResult result = new PokerResult(4, hash1 );
+
+        System.out.println(result.getScore());
+    }
+}

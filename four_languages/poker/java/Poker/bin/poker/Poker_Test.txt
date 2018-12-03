@@ -1,0 +1,27 @@
+test_poker.java
+cd /Users/local-kieu/Exercism/python/poker/java/
+
+# need to create eclipse project
+
+create Poker project
+R-click on Poker folder; select new > JUnit Test Case
+ 	=> Poker_test.java
+
+// k ass JUnit 4 in build path
+
+// created Poker_test.java
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class Poker_test {
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}
+
+//k to run
+R-click on Poker_test.java; select Run As > JUnit test

@@ -1,0 +1,67 @@
+package poker;
+
+import java.util.Arrays;
+
+public class BestHand {
+	public String[] hands;
+	
+    // constructor
+    public BestHand(String[] hands) {
+    	hands = hands;
+    }
+
+    // need to write compareAry(a1, a2) int[] function 
+    // assume a1 and a2 has same length
+    // return a1 < a2 => -1, a1==a2 => 0; a1>a2 => 1
+
+    public int compareAry(int[] a1, int[] a2) {
+        int flag = 100;
+        for (int i=0; i< a1.length; i++) {
+            if (a1[i] < a2[i]) {  flag = -1; break;} 
+            if (a1[i] == a2[i]) {  flag = 0; break;} 
+            if (a1[i] > a2[i]) { flag = 1; break; }
+        }
+        return flag;
+    }
+
+/*
+    public static void main(String[] args) {
+        String[] hands = {"3S 2H AC 2D 4H", "3S 2H AC 2D 3H"};
+        int[] bestScore = new int[6];
+       // Poker pk = new Poker("3S 2H AC 2D 4H");
+        Poker pk1 = new Poker(hands[0]);
+        bestScore = pk1.scoreHand();
+        String bestHand = hands[0];
+        
+        for (int i=1; i< hands.length; i++) {
+            int[] currentScore = new int[6];
+            Poker pk = new Poker(hands[i]);
+            currentScore = pk.scoreHand();
+            
+            if ( compareAry(currentScore, bestScore) > 0 ){
+                bestScore = currentScore;
+                bestHand = hands[i];
+            } 
+        } 
+		System.out.println(Arrays.toString(bestScore));     // [2, 14, 3, 3, 2, 2]
+        System.out.println(bestHand);                       // 3S 2H AC 2D 3H 
+    }
+ */  
+    public String bestHand(hands) {
+    	Poker pk1 = new Poker(hands[0]);
+        bestScore = pk1.scoreHand();
+        String bestHand = hands[0];
+        
+        for (int i=1; i< hands.length; i++) {
+            int[] currentScore = new int[6];
+            Poker pk = new Poker(hands[i]);
+            currentScore = pk.scoreHand();
+            
+            if ( compareAry(currentScore, bestScore) > 0 ){
+                bestScore = currentScore;
+                bestHand = hands[i];
+            } 
+        } 
+    
+    }
+}

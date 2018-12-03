@@ -1,0 +1,41 @@
+package poker;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
+import org.junit.*;			// solve @Ignore problem
+
+public class Poker_test {
+
+	@Test
+	public void test_nothing_vs_one_pair() {
+		//k it gives me error when I use single quote
+		String[] hands = new String[]{"4S 5H 6S 8D JH","2S 4H 6S 4D JH"};
+		String result = BestHand.bestHand(hands);
+		assertEquals( "2S 4H 6S 4D JH", result);
+	}
+	
+	//@Ignore
+	@Test
+	public void test_two_pair(){
+		String[] hands = new String[]{ "4S 2H 6S 2D JH", "2S 4H 6S 4D JH"};
+		String result = BestHand.bestHand(hands);
+		assertEquals( "2S 4H 6S 4D JH", result);
+	}
+		
+	@Test
+	public void test_one_pair_vs_double_pair(){
+		String[] hands = new String[]{ "2S 8H 6S 8D JH", "4S 5H 4S 8D 5H"};	
+		String result = BestHand.bestHand(hands);
+		assertEquals( "4S 5H 4S 8D 5H", result);
+	}
+	
+	//@Ignore
+	@Test
+	public void test_two_double_pair(){
+		String[] hands = new String[]{ "2S 8H 2S 8D JH", "4S 5H 4S 8D 5H"};		
+		String result = BestHand.bestHand(hands);
+		assertEquals( "2S 8H 2S 8D JH", result);
+	}
+	
+
+}

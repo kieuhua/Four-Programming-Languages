@@ -1,0 +1,241 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+
+/* Poker in java, 
+  input one hand parse the hand for score and TreeMap
+  the TreeMap is sorted by values.
+    ex: valuesRanks TreeMap
+  	key: 2 and value: 2
+	key: 4 and value: 1
+	key: 4 and value: 2
+	key: 2 and value: 1
+
+	poker.scoreHand() => PokerResult object
+	PokerResult = { int score, valuesRanks TreeMap }
+
+	BestHand with compare two PokerResult objects 
+	=> return a1 < a2 => -1, a1==a2 => 0; a1>a2 => 1
+*/
+public class Poker {
+	public static final String RANKS_INDEX = "--23456789TJQKA";
+	public static final Integer[] SPECIAL_STRAIGHT = new Integer[]{ 2,3,4,5,14};
+	
+	String hand;
+	private char suits[];	
+
+	// it creates in createRanksHash()
+	private Integer[] ranksSorted = new Integer[5];	
+
+	// store rank as key, value is count of rank
+	private HashMap<Integer, Integer> ranks_hash = new HashMap<>();
+
+	int score;	// use to create PokerResult object
+
+	Poker(String handStr) {
+		
+		// BestHand class will pass in each hand	
+		hand = handStr.replace("10", "T");	// replace 10 to 'T'
+
+		suits = parseHand(hand, true);		// get suits
+
+		createRanksHash(hand);	// create ranks_hash
+
+		//scoreR1 = scoreHand(); for testing Poker.java by itself
+	}
+
+	// parse hand to create  suits and ranks char[], 
+	// but only returns one of them
+	// if argument flag = true => suits char[], flag = false => ranks char[]
+	private char[] parseHand(String handStr, boolean flag) {
+		char[] suits = new char[5];
+		char[] ranks = new char[5];
+
+		// take out spaces
+		String str = handStr.replaceAll(" ", "");
+		
+		// create two char[], one for suits and one for ranks
+		char[] handAry = str.toCharArray();
+		int idx1 = 0;
+		int idx2 = 0;
+		for( int i=0; i < handAry.length ; i++ ) {
+			if ( (i % 2) != 0) {
+				suits[idx1++] = handAry[i];
+			} else {
+				ranks[idx2++] = handAry[i];
+			}
+		}
+		// depend on flag return suits char[] or ranks char[]
+		if (flag) {
+			return suits;
+		} else {
+			return ranks;		
+		}
+	}
+
+	// create ranks_hash, key is rank, and value is count of the rank
+	private void createRanksHash(String handStr) {
+
+		char[] ranks = parseHand(handStr, false);		// [ 6,5,K,5,T]
+		
+		// convert ranks 'T', 'J', 'Q', 'A' into values 
+		for( int i=0; i < ranks.length; i++) {
+			ranksSorted[i] = RANKS_INDEX.indexOf(ranks[i]);
+		}	
+		Arrays.sort(ranksSorted);	//[ 5,5,6,10,13]
+
+		// create ranks hash with key= rank , value = count of rank
+		for(int i=0; i < ranksSorted.length; i++) {
+			if (ranks_hash.containsKey(ranksSorted[i])) {
+				ranks_hash.put(ranksSorted[i], ranks_hash.get(ranksSorted[i]) + 1);
+				//System.out.println(ranks_hash.get(ranksSorted[i]));	// => 2
+			} else {
+				ranks_hash.put(ranksSorted[i], 1);
+			}
+		}
+	}
+
+	/*
+	poker.scoreHand() uses hand, suits, ranks_hash
+	it calculate score by
+	- check for flush, special straight, straight, kinds
+	- get int score 0 - 8
+
+	it creates valuesRanks TreeMap 
+	- using inner MyComparator class to create comparator 
+	- use comparator as sort function in TreeMap
+	- the comparator func sorts values of ranks_hash
+
+	=> PokerResult object
+	PokerResult = { int score, valuesRanks TreeMap }
+	the TreeMap is sorted by values.
+    ex: valuesRanks TreeMap
+  	key: 2 and value: 2
+	key: 4 and value: 1
+	key: 4 and value: 2
+	key: 2 and value: 1
+	*/
+	public PokerResult scoreHand() {
+
+		// check for flush, work => false
+		boolean flush = true;
+		for(int i=1; i< suits.length; i++) {
+			if (suits[i] != suits[i-1]) {
+				flush = false;
+				break;
+			}
+		}
+
+		// check for special straight [ 2,3,4,5,14];
+		// so we can modify ranks_hash
+		if ( Arrays.equals(ranksSorted, SPECIAL_STRAIGHT)) {
+			// then change 14 to 1, change ranks_hash => {1: 1, 2:2, 3:3, 4:4, 5:5}
+			ranks_hash.clear();		//k I forgot to clear the hash 
+			ranks_hash.put(1,1);
+			ranks_hash.put(2,2);
+			ranks_hash.put(3,3);
+			ranks_hash.put(4,4);
+			ranks_hash.put(5,5);
+
+			// need to change ranksSorted from
+			//[ 2,3,4,5,14]; to [1,2,3,4,5]
+			ranksSorted = new Integer[]{1, 2, 3, 4, 5}; 
+		}
+
+		// check for straight
+		boolean straight = true;
+		for(int i=1; i < ranksSorted.length; i++) {
+			if (ranksSorted[i] != ranksSorted[i-1] + 1) {
+				straight = false;
+				break;
+			}
+		}
+		
+		// create kinds = values of ranks_hash, sort in reverse
+		Collection<Integer> kinds_col = new ArrayList<>();
+		kinds_col = ranks_hash.values();
+		//System.out.println(Arrays.asList(ranks_hash));
+		Integer[] kinds = new Integer[kinds_col.size()];
+		Object[] kinds2 = kinds_col.toArray();
+		// cast Object into int
+		for(int i=0; i<kinds2.length; i++) {
+			kinds[i] = (int) kinds2[i];
+			//System.out.println(kinds[i]);
+		}
+		Arrays.sort(kinds, Collections.reverseOrder());	// reverse array order, [2,1,1,1]
+		//System.out.println(Arrays.toString(kinds));
+
+		// calculate score: kinds, flush, straight
+		if (flush && straight) { score = 8;}
+
+		Integer[] score_7 = new Integer[]{4,1};
+		if (Arrays.equals(kinds, score_7)) { score = 7;}
+
+		Integer[] score_6 = new Integer[]{3,2};
+		if (Arrays.equals(kinds, score_6)) { score = 6;}
+
+		if (flush) { score = 5;}
+		
+		if (straight) { score = 4;}
+
+		Integer[] score_3 = new Integer[]{3,1,1};
+		if (Arrays.equals(kinds, score_3)) { score = 3;}
+
+		Integer[] score_2 = new Integer[]{2,2,1,};
+		if (Arrays.equals(kinds, score_2)) { score = 2;}
+
+		Integer[] score_1 = new Integer[]{2,1,1,1};
+		if (Arrays.equals(kinds, score_1)) { score = 1;}
+
+		/*
+		create valuesRanks TreeMap use MyComparator class create Comparator comp
+		to sort the ranks_hash by its value, then use comp as sort fumction 
+		for valuesRanks TreeMap
+		*/
+		MyComparator comp = new MyComparator(ranks_hash);
+		TreeMap<Integer, Integer> valuesRanks = new TreeMap<Integer, Integer>(comp);  
+		
+		for (Map.Entry<Integer, Integer> entry : ranks_hash.entrySet()) {
+			// assign key and value from ranks_hash to valuesRanks with sorted by ranks_hash value
+			valuesRanks.put(entry.getKey(), entry.getValue());
+			// these are ranks_hash key and value
+			//System.out.println("key: " + entry.getKey().toString() +  " and " + "value: " + entry.getValue().toString());
+		}
+		for (Map.Entry<Integer, Integer> entry : valuesRanks.entrySet()) {
+			/* these are valuesRanks TreeMap sorted with values
+			key: 2 and value: 2
+			key: 4 and value: 1
+			key: 4 and value: 2
+			key: 2 and value: 1
+			*/
+			System.out.println("key: " + entry.getKey().toString() +  " and " + "value: " + entry.getValue().toString());
+		}
+
+		// create PokerResult<Integer, Hashmap>
+		// Integer obj = score; 
+		PokerResult result = new PokerResult(score, valuesRanks);
+
+		return result;	
+	}
+	
+	public static void main(String[] args) {
+		String hand = "3S 2H AC 2D 4H";
+		new Poker(hand);
+	} 
+
+	class MyComparator implements Comparator {
+		Map map;
+		public MyComparator(Map map) {
+		this.map = map;
+		}
+		public int compare(Object o1, Object o2) {
+		return ((Integer) map.get(o2)).compareTo((Integer) map.get(o1));
+		}
+	}
+	
+}

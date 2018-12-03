@@ -1,0 +1,85 @@
+poker_rules.txt
+
+1) high card wins => JH
+hands = [
+            "4D 5S 6S 8D 3C",
+            "2S 4C 7S 9H 10H",
+            "3S 4S 5D 6H JH",
+        ]
+        
+2) tie => 2 winners, JH JD
+hands = [
+            "4D 5S 6S 8D 3C",
+            "2S 4C 7S 9H 10H",
+            "3S 4S 5D 6H JH",
+            "3H 4H 5C 6C JD",
+        ]
+3) tie => others high card => higer wins
+hands = [
+            "3S 5H 6S 8D 7H",		# wins
+            "2S 5D 6D 8C 7S",
+        ]
+4) one pair wins better scors
+hands = [
+            "4S 5H 6C 8D KH",
+            "2S 4H 6S 4D JH",   #wins 
+        ]
+        
+5) highet_pair_wins
+hands = [
+            "4S 2H 6S 2D JH",
+            "2S 4H 6C 4D JD",		# wins
+        ]
+        
+6) two pairs beats one pair
+hands = [
+            "2S 8H 6S 8D JH",
+            "4S 5H 4C 8C 5C",		 # wins
+        ]
+        
+7) two_double_pair
+hands = [
+            "2S 8H 2D 8D 3H",		# wins
+            "4S 5H 4C 8S 5D",
+        ]
+        
+8) two_double_pair_tie_kicker
+hands = [
+            "JD QH JS 8D QC",		# wins
+            "JS QS JC 2D QD",
+        ]
+        
+9) three_of_a_kind_beats_two_pair
+hands = [
+            "2S 8H 2H 8D JH",
+            "4S 5H 4C 8S 4H",		# wins
+        ]
+        
+10) two_triple_pair
+hands = [
+            "2S 2H 2C 8D JH",
+            "4S AH AS 8C AD",		# wins
+        ]
+11) two_triple_pair w high card
+hands = [
+            "4S AH AS 7C AD",
+            "4S AH AS 8C AD",		#  wins
+        ]
+
+12) three vs straight
+hands = [
+            "4S 5H 4C 8D 4H",
+            "3S 4D 2S 6D 5C",		# straight wins
+        ]
+        
+13) three vs straight with A
+hands = [
+            "4S 5H 4C 8D 4H",
+            "10D JH QS KD AC",		# strainght wins
+        ]
+        
+14) two straight
+hands = [
+            "4S 6C 7S 8D 5H",
+            "5S 7H 8S 9D 6H",			# wins
+        ]

@@ -1,0 +1,25 @@
+test_poker.java
+cd /Users/local-kieu/programming_skills/four_languages/poker/java/Poker/src/poker
+
+# need to create eclipse project
+
+create Poker project
+R-click on Poker folder; select new > JUnit Test Case
+ 	=> Poker_test.java
+
+// created Poker_test.java
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class Poker_test {
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}
+
+//k to run
+R-click on Poker_test.java; select Run As > JUnit test

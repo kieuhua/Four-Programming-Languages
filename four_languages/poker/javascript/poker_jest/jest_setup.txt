@@ -1,0 +1,96 @@
+jest.txt
+https://flaviocopes.com/jest/
+k: ok enough jest for unit tests, I can't get it to work
+
+I know I need to create package.json, and .babelrc, test name be math.test.js
+so no "import", and "export"
+nothing work; I am going to use jasmine, 10 years, behavior testing like RSpec,
+for ES5 javascript
+
+There are new javascript test frameworks like tape, ava
+This is good compare article about JS test frameworks
+https://raygun.com/blog/javascript-unit-testing-frameworks/
+
+https://jestjs.io/docs/en/cli.html
+// installation
+$ which jest			=> /usr/local/bin/jest
+$ jest -v					=> 23.4.1
+
+yarn add --dev jest
+/*** problem running jest unit test **/
+=> import not found token, bc 'import' is ES6, not yet include standard Javascript
+
+cd /Users/local-kieu/Exercism/python/poker/javascript/test_jest_proj/math/src
+
+https://ethereum.stackexchange.com/questions/21210/syntaxerror-unexpected-token-import-on-truffle-test?rq=1
+I may try this suggestion
+
+https://github.com/babel/gulp-babel/issues/93
+
+npm install --save-dev babel-preset-es2015
+npm install --save-dev babel-preset-es2016
+npm install --save-dev babel-preset-es2017
+npm install --save-dev babel-register
+npm install --save-dev babel-polyfill
+
+{
+	presets: ["babel-preset-es2015", "babel-preset-es2016", "babel-preset-es2017"]
+}
+
+npm install --save-dev babel-preset-stage-2
+
+/*********/
+problem not solve with this solution
+$ npm install --save-dev babel-cli
+
+// need to add this, but => error error An unexpected error occurred: "https://registry.yarnpkg.com/transform-es2015-modules-commonjs: Not found".
+yarn add transform-es2015-modules-commonjs --dev
+
+https://github.com/babel/babel/issues/8249		// read this for more details
+
+--require babel-register ./test/setup  ???
+
+babel script.js --out-file script-compiled.js --presets=react-native --plugins transform-es2015-modules-commonjs,transform-object-rest-spread
+
+/****************/
+npm install --save-dev jest
+
+# add to package.json
+{ "scripts": { "test": "jest" }}
+
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+// add ing jest to create-react-app project
+yarn add --dev jest
+Yarn test // run test
+
+// or
+yarn global add jest
+
+// create react project, so I can use ES6 syntax
+$ create-react-app math
+
+// creaate jest test
+
+// create math.js and math.test.js
+
+$npm init 	to create package, package.json
+=>
+{
+  "name": "testing",
+  "version": "1.0.0",
+  "description": "This package for using jest to run javascript tests.",
+  "main": "math-test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
+// skip test
+test.skip('it is not snowing', () => {
+  expect(inchesOfSnow()).toBe(0);
+});

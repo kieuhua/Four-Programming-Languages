@@ -1,0 +1,12 @@
+
+Poker score rules:
+
+flush && straight => score = 8
+square [4,1]			=> score = 7
+full house [3,2]	=> score = 6
+flush							=> score = 5
+straight					=> score - 4
+kinds [3,1,1]			=> score = 3
+kinds [2,2,1]			=> score = 2
+kinds [2,1,1,1]		=> score = 1
+	

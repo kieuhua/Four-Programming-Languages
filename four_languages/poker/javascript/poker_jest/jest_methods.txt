@@ -1,0 +1,102 @@
+jest_methods.txt
+
+https://flaviocopes.com/jest/
+
+// math.test.js
+// cd /Users/local-kieu/programming_skills/four_languages/poker/javascript/poker_jest
+// jest math.test.js
+// 4 all pass
+// require is server side technology not client side
+//const { sum, mul, sub, div } = require("./math")
+import { sum, mul, sub, div } from "./math.js";
+
+test("Adding 1 +1 equals 2", () => {
+	expect(sum(1,1)).toBe(2)
+})
+test("Mul 1 * 1 equals 1", () => {
+	expect(mul(1,1)).toBe(1)
+})
+test("Sub 1 - 1 equals 0", () => {
+	expect(sub(1,1)).toBe(0)
+})
+test("Div 1 / 1 equals 1", () => {
+	expect(div(1,1)).toBe(1)
+})
+
+test("Adding 1 + 1 does not equal 3", () => {
+  expect(sum(1, 1)).not.toBe(3)
+})
+
+// use promises
+For use with promises, you can use .resolves and .rejects:
+expect(Promise.resolve('lemon').resolves.toBe('lemon')
+expect(Promise.reject('Octopus').rejects.toThrow('Octopus')
+
+/***  Setup ***/
+beforeAll(() => { )
+beforeEach(() => { })
+/** TearDown **/
+afterEach(() => { )
+afterAll(() => { })
+
+// group tests using describe
+describe('first set', () => {
+	beforeEach(() => { })
+	afterAll(() => { })
+	test(/*..*/)
+	test(/*..*/)
+})
+describe('second set', () => {
+	beforeEach(() => { })
+	beforeAll(() => { )
+	test(/*..*/)
+	test(/*..*/)
+})
+
+// Asynchronus testing
+
+// Call back
+// uppercase.js
+function uppercase(str, callback) {
+	callback(str.toUpperCase())
+}
+module.exports = uppercase
+
+// uppercase.test.js
+const uppercase = require('./src/uppercase')
+test(`uppercase 'test' to equal 'TEST'`, (done) => {
+	uppercase('test', (str) => {
+		expect(str).toBe('TEST')
+		done()
+	}
+})
+
+// promises
+With functions that return promises, we simply return a promise from the test:
+// uppercase.js
+const uppercase = (str) => {
+	return new Promise( (resolve, reject) => {
+		if (!str) {
+			reject('Empty string')
+			return
+		}
+		resolve(str.toUpperCase())
+	})
+}
+module.exports = uppercase
+
+// uppercase.test.js
+const uppercase = require('./uppercase')
+test(`uppercase 'test' to equal 'TEST'`, () => {
+	return uppercase('test').then( str => {
+		expect(str).toBe('TEST')
+	})
+}
+
+//Promises that are rejected can be tested using .catch():
+test(`uppercase 'test' to equal 'TEST'`, () => {
+	return uppercase('').catch(e => {
+		expect(e).toMatch('Empty string')
+	}
+})
+

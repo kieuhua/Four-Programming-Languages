@@ -1,0 +1,17 @@
+package poker;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
+
+public class Poker_test {
+
+	@Test
+	public void test_nothing_vs_one_pair() {
+		//k it gives me error when I use single quote
+		String[] hands = new String[]{"4S 5H 6S 8D JH","2S 4H 6S 4D JH"};
+		
+		String result = BestHand.bestHand(hands);
+		assertEquals( "2S 4H 6S 4D JH", result);
+	}
+
+}

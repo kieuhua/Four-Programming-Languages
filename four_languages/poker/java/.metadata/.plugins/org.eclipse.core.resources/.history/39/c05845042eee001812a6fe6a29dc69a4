@@ -1,0 +1,125 @@
+package poker;
+
+import java.util.Arrays;
+import java.util.Set;
+import java.util.List;
+import java.util.Map;
+import java.util.*;
+
+class BestHand {
+    // constructor
+    BestHand(String[] hands) {
+    }
+
+    // compare two List by compare keys of the List
+    // return a1 < a2 => -1, a1==a2 => 0; a1>a2 => 1
+    public static  int compareList(List a1, List a2) {
+        // create Integer a1_keys[]
+        Integer[] a1_keys = new Integer[5];
+        Map.Entry<Integer, Integer> entry1;
+
+        for (int i=0; i< a1.size(); i++) {
+            entry1 = (Map.Entry<Integer, Integer>) a1.get(i);
+            a1_keys[i] = entry1.getKey();
+        }
+
+        // create Integer a2_keys[]
+        Integer[] a2_keys = new Integer[5];
+        Map.Entry<Integer, Integer> entry2;
+
+        for (int i=0; i< a1.size(); i++) {
+            entry2 = (Map.Entry<Integer, Integer>) a2.get(i);
+            a2_keys[i] = entry2.getKey();
+        }
+
+        // compare Integer[] a1_keys and Integer[] a2_keys
+        int flag = 0;
+        for (int i=0; i< a1_keys.length; i++) {
+            if (a1_keys[i] < a2_keys[i]) {  flag = -1; break;} 
+            if (a1_keys[i] > a2_keys[i]) { flag = 1; break; }
+        }
+        return flag;
+    }
+
+    public static int comparePokerResult(PokerResult pokerR1, PokerResult pokerR2) {
+        int score1, score2;
+        List ranks1, ranks2;
+        int flag=0;
+
+        score1 = pokerR1.getScore();
+        score2 = pokerR2.getScore();
+        ranks1 = pokerR1.valuesRanks();
+        ranks2 = pokerR2.valuesRanks();
+
+        if (score1 > score2) {
+            flag = 1;
+        } else if (score1 < score2) {
+            flag = -1;
+        } else {        // score1 == score2
+            // need to compare List ranks
+            flag = compareList(ranks1, ranks2);  
+        }
+
+        return flag;
+    }
+
+    /*
+    public static void main(String[] args) {
+        //String[] hands = {"3S 2H AC 2D 4H", "3S 2H AC 2D 3H"};
+        // String[] hands = { "4S 2H 6S 2D JH", "2S 4H 6S 4D JH"};
+
+        // problem two_double_pair
+        String[] hands = { "2S 8H 2S 8D JH", "4S 5H 4S 8D 5H"};
+
+        PokerResult bestScore;
+        PokerResult currentScore;
+
+       // Poker pk = new Poker("3S 2H AC 2D 4H");
+        Poker pk1 = new Poker(hands[0]);
+        bestScore = pk1.scoreHand();
+        String bestHand = hands[0];
+        String currentHand;
+        
+        for (int i=1; i< hands.length; i++) {
+            currentHand = hands[i];
+            Poker pk = new Poker(hands[i]);
+            currentScore = pk.scoreHand();
+          
+            if ( comparePokerResult(currentScore, bestScore) > 0 ){
+                bestScore = currentScore;
+                bestHand = currentHand;
+            } 
+        } 
+        System.out.println(bestHand);
+    }
+    */
+    public static String bestHand(String[] handsAry) {
+    	//String[] hands = { "4S 2H 6S 2D JH", "2S 4H 6S 4D JH"};
+		String[] hands = handsAry;
+        PokerResult bestScore;
+        PokerResult currentScore;
+
+       // Poker pk = new Poker("3S 2H AC 2D 4H");
+        Poker pk1 = new Poker(hands[0]);
+        bestScore = pk1.scoreHand();
+        String bestHand = hands[0];
+        String currentHand;
+        
+        for (int i=1; i< hands.length; i++) {
+            currentHand = hands[i];
+            Poker pk = new Poker(hands[i]);
+            currentScore = pk.scoreHand();
+          
+            if ( comparePokerResult(currentScore, bestScore) > 0 ){
+                bestScore = currentScore;
+                //bestHand = hands[i];
+                bestHand = currentHand;
+            } else if ( comparePokerResult(currentScore, bestScore) == 0 ){
+            	
+            }
+        } 
+       // System.out.println(bestHand);        
+        return bestHand;
+    }
+    
+}

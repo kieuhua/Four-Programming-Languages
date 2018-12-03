@@ -1,0 +1,21 @@
+package poker;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.junit.Test;
+
+import Poker;
+import BestHand;
+
+public class Poker_test {
+
+	@Test
+	public void test_nothing_vs_one_pair() {
+		String[] hands = {'4S 5H 6S 8D JH','2S 4H 6S 4D JH'};
+		assertEquals( {'2S 4H 6S 4D JH'}, bestHand(hands));
+	}
+
+}

@@ -1,0 +1,112 @@
+
+import java.util.Arrays;
+import java.util.TreeMap;
+import java.util.Set;
+
+class BestHand {
+    // constructor
+    BestHand(String[] hands) {
+    }
+
+    // compare two Integer[] by compare each of its element
+    // return a1 < a2 => -1, a1==a2 => 0; a1>a2 => 1
+    public static  int compareAry(Integer[] a1, Integer[] a2) {
+        // compare Integer[] a1 and Integer[] a2
+        int flag = 0;
+        for (int i=0; i< a1.length; i++) {
+            if (a1[i] < a2[i]) {  flag = -1; break;} 
+            if (a1[i] == a2[i]) {  flag = 0; break;} 
+            if (a1[i] > a2[i]) { flag = 1; break; }
+        }
+        return flag;
+    }
+
+    /* compareTree(tmap1, tmap2) is about comparing the keys of two TreeMap, 
+        - get keySet => Set
+        - convert Set to Object[]
+        - convert Object[] to Integer[]
+        with two Integer[] call compareArY() => flag
+        return a1 < a2 => -1, a1==a2 => 0; a1>a2 => 1
+    */
+    public static int compareTree(TreeMap tmap1, TreeMap tmap2) {
+        Set tSet1;
+        Set tSet2;
+        Object[] tSetObj1;
+        Object[] tSetObj2;
+        Integer[] tSetAry1 = new Integer[5];
+        Integer[] tSetAry2 = new Integer[5];
+        int flag;
+
+        tSet1 = tmap1.keySet();
+        tSet2 = tmap2.keySet();
+        // convert Set to Object[]
+        tSetObj1 = tSet1.toArray();
+        tSetObj2 = tSet2.toArray();
+
+        // convert Object[] to Integer[]
+        for(int i=0; i< tSetObj1.length; i++) {
+            tSetAry1[i] = (Integer) tSetObj1[i];
+        }
+        for(int i=0; i< tSetObj2.length; i++) {
+            tSetAry2[i] = (Integer) tSetObj2[i];
+        }
+
+        flag = compareAry(tSetAry1, tSetAry2);
+        return flag;
+    }
+
+    public static int comparePokerResult(PokerResult pokerR1, PokerResult pokerR2) {
+        int score1;
+        int score2;
+        TreeMap ranks1;
+        TreeMap ranks2;
+        int flag=0;
+
+        score1 = pokerR1.getScore();
+        score2 = pokerR2.getScore();
+        ranks1 = pokerR1.valuesRanks();
+        ranks2 = pokerR2.valuesRanks();
+
+        if (score1 > score2) {
+            flag = 1;
+        } else if (score1 < score2) {
+            flag = -1;
+        } else {        // score1 == score2
+            // need to compare TreeMap ranks
+            flag = compareTree(ranks1, ranks2);  
+        }
+
+        return flag;
+    }
+
+    public static void main(String[] args) {
+        //String[] hands = {"3S 2H AC 2D 4H", "3S 2H AC 2D 3H"};
+        String[] hands = { "4S 2H 6S 2D JH", "2S 4H 6S 4D JH"};
+        PokerResult bestScore;
+        PokerResult currentScore;
+
+       // Poker pk = new Poker("3S 2H AC 2D 4H");
+        Poker pk1 = new Poker(hands[0]);
+        bestScore = pk1.scoreHand();
+        String bestHand = hands[0];
+        String currentHand;
+        /*
+        Poker pk2 = new Poker(hands[1]);
+        currentScore = pk2.scoreHand();
+        String currentHand = hands[1];
+       */
+        
+        for (int i=1; i< hands.length; i++) {
+            currentHand = hands[i];
+            Poker pk = new Poker(hands[i]);
+            currentScore = pk.scoreHand();
+          
+            if ( comparePokerResult(currentScore, bestScore) > 0 ){
+                bestScore = currentScore;
+                //bestHand = hands[i];
+                bestHand = currentHand;
+            } 
+        } 
+        System.out.println(bestHand);                       // 3S 2H AC 2D 3H 
+    }
+}
